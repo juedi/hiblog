@@ -7,6 +7,40 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<context:component-scan base-package="net.juedi.blog.web"></context:component-scan>
+	<!-- 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
 		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
+	-->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver"
+		p:ignoreAcceptHeader="true" p:defaultContentType="text/html" p:favorParameter="false">
+	    <!-- 设置为true以忽略对Accept Header的支持 -->
+	    <!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
+	    <!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
+	    <property name="mediaTypes">
+	        <map>
+	            <entry key="html" value="text/html"/>   
+	            <entry key="json" value="application/json" />
+	            <entry key="xml" value="application/xml" />
+	        </map>
+	    </property>
+	    <!-- 用于开启 /userinfo/123?format=json 的支持，false为关闭之,我更喜欢.json的方式，因为可以少敲几次键盘 -->
+	    <property name="viewResolvers">
+	        <list>
+	            <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+	                <bean
+	                    class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	                    <property name="prefix" value="/WEB-INF/views/"></property>
+	                    <property name="suffix" value=".jsp"></property>
+	                </bean>
+	        </list>
+	    </property>
+	    <property name="defaultViews">
+	        <list>
+	            <!-- for application/json -->
+	            <bean
+	                class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+	        </list>
+	    </property>
+	</bean>
+	
 </beans>
