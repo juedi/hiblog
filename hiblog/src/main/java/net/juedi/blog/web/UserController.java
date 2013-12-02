@@ -1,17 +1,21 @@
 package net.juedi.blog.web;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
 @RequestMapping(value="/user")
 public class UserController {
 
-	@RequestMapping("/showuser")
-	public String showUser(Model model){
-		model.addAttribute("user", "duliaoyuan");
-		return "user";
+	@RequestMapping("/show")
+	public ModelAndView showUser(String index){
+		ModelAndView mav = new ModelAndView("user");
+		System.out.println(index);
+		mav.addObject("user", "duliaoyuan");
+		mav.addObject("hello world");
+		
+		return mav;
 	}
 }
